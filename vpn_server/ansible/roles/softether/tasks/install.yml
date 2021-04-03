@@ -1,0 +1,49 @@
+- name: create softether_dir
+  # become: true
+  # become_user: root
+  file:
+    path: "{{ softether_dir }}"
+    state: directory
+    mode: 0700
+
+- name: download and extract vpnserver.tar.gz
+  # become: true
+  # become_user: root
+  unarchive:
+    remote_src: true
+    src: "{{ vpnserver_src }}"
+    dest: "{{ softether_dir }}"
+    extra_opts:
+      - --strip-components=1
+
+- name: build vpnserver, vpncmd
+  # become: true
+  # become_user: root
+  make:
+    chdir: "{{ softether_dir }}"
+    target: i_read_and_agree_the_license_agreement
+
+- name: change permissions softether_dir
+  # become: true
+  # become_user: root
+  file:
+    path: "{{ softether_dir }}"
+    state: directory
+    recurse: yes
+    mode: 0600
+
+- name: change permissions vpnserver
+  # become: true
+  # become_user: root
+  file:
+    path: "{{ softether_dir }}/vpnserver"
+    state: file
+    mode: 0700
+
+- name: change permissions vpnserver
+  # become: true
+  # become_user: root
+  file:
+    path: "{{ softether_dir }}/vpncmd"
+    state: file
+    mode: 0700

@@ -1,0 +1,32 @@
+{
+    "variables": {
+      "ami_name": "linux_httpd",
+      "source_ami": "ami-07d9160fa81ccffb5",
+      "region":"eu-west-1",
+      "scriptdir": "{{template_dir}}/../scripts"
+    },
+    "builders": [{
+      "type": "amazon-ebs",
+      "access_key": "{{user `access_key`}}",
+      "secret_key":"{{user `secret_key`}}",
+      "ami_name": "{{user `ami_name`}}",
+      "ami_regions" : ["eu-west-1"],
+      "region": "{{user `region`}}",
+      "source_ami": "{{user `source_ami`}}",
+      "instance_type": "t2.micro",
+      "ssh_keypair_name": "omakaupunki_key",
+      "ssh_private_key_file": "~/.ssh/keys/omakaupunki_key.pem",
+      "communicator": "ssh",
+      "ssh_username": "ec2-user",
+      "ssh_pty" : true,
+      "run_tags": {"Name":"packer-image"}
+    }],
+    "provisioners": [
+        {
+            "type": "shell",
+            "scripts": [
+                "{{user `scriptdir`}}/install_httpd.sh"
+            ]
+        }
+    ]
+}

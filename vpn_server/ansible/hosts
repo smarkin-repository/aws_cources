@@ -1,0 +1,6 @@
+[servers]
+vpn_server ansible_host=64.225.105.41
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_ssh_private_key_file=/home/user/.ssh/keys/dgo_key

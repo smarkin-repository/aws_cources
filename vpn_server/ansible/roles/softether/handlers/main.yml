@@ -1,0 +1,8 @@
+---
+- name: ensure started, enable on boot
+  # become: true
+  # become_user: root
+  service:
+    name: softether
+    state: started
+    enabled: yes

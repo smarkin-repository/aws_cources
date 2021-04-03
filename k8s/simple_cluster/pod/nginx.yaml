@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  volumes:
+    - name: shared-data
+      hostPath:
+        path: /c/Users/Home/ZWork/VRC/SandBox/aws_cources/k8s/simple_cluster/shared-data
+        type: Directory
+  containers:
+  - image: nginx:1.19.8
+    name: nginx
+    ports:
+      - containerPort: 80
+    resources: {}
+    volumeMounts:
+    - name: shared-data
+      mountPath: /usr/share/nginx/html
+  hostNetwork: true
+  dnsPolicy: Default # Default ClusterFirst
+  restartPolicy: Never
+# status: {}

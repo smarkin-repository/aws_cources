@@ -1,0 +1,14 @@
+- name: add softether service
+  # become: true
+  # become_user: root
+  template:
+    src: softether.service.j2
+    dest: /etc/systemd/system/softether.service
+    mode: 0644
+
+# ERROR! The requested handler 'restart softether' was not found in either the main handlers list nor in the listening handlers list
+# notify: restart softether
+
+- name: Update systemd service
+  systemd:
+    daemon_reload: yes

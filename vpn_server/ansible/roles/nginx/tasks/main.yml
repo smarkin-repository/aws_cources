@@ -1,0 +1,11 @@
+---
+- name: Install nginx
+  shell: | 
+    apt install nginx -y
+
+- name: setup firewall
+  shell: |
+    ufw allow 'Nginx HTTP'
+    ufw allow 'Nginx HTTPS'
+    ufw allow 'OpenSSH'
+    echo "y" | ufw enable 

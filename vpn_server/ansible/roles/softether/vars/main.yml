@@ -1,0 +1,22 @@
+softether_dir: /usr/local/softether
+vpnserver_src: http://www.softether-download.com/files/softether/v4.34-9745-rtm-2020.04.05-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.34-9745-rtm-2020.04.05-linux-x64-64bit.tar.gz
+
+# You should change values and use Ansible Vault ( https://docs.ansible.com/ansible/latest/user_guide/vault.html )
+vpn_users:
+  - name: user
+    pass: <pass>
+    groups: [users]
+
+vpn_groups: "{{ vpn_users | map(attribute='groups') | sum(start=[]) | unique }}"
+
+vpn_protocols:
+  - l2tp_ipsec
+
+vpn_shared_pass: <pass>
+vpn_admin_pass: <pass>
+
+vpn_hub:
+  name: default
+
+
+vpn_version: 4.34-9745-beta

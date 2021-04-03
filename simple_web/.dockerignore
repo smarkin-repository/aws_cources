@@ -1,0 +1,13 @@
+node_modules
+npm-debug.log
+
+my-app
+
+Makefile
+server.js
+*.md
+Dockerfile
+Dockerfile*public/
+.git/
+.gitmodules/
+.gitignore

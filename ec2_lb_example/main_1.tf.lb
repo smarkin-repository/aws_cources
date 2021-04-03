@@ -1,0 +1,160 @@
+provider "aws" {
+  version = "~> 3.0"
+  region  = var.region
+}
+
+data "local_file" "install_httpd" {
+    filename = "${path.module}/../scripts/install_httpd.sh"
+}
+
+data "aws_ami" "ubuntu" {
+    most_recent = true
+
+    filter {
+        name   = "name"
+        values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
+    }
+
+    filter {
+        name   = "virtualization-type"
+        values = ["hvm"]
+    }
+
+    owners = ["099720109477"] # Canonical
+}
+
+data "aws_ami" "amazon_linux_2" {
+  most_recent = true
+
+  filter {
+    name   = "owner-alias"
+    values = ["amazon"]
+  }
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-ebs"]
+  }
+
+  owners = ["amazon"]
+}
+
+# Generate a random name
+resource "random_string" "random-name" {
+  length  = 8
+  upper   = false
+  number  = true
+  lower   = true
+  special = false
+}
+
+module "vpc" {
+    source = "./modules/vpc/"
+    cidr_block = var.cidr_block
+    destination_cidr_block = var.destination_cidr_block
+    tags = {
+        Name = "vpc-${var.name}"
+        Environment = "${var.environment}"
+        Owner = "${var.owner}"
+        Company = "${var.company}"
+    }
+}
+
+module "public_subnet" {
+    source = "./modules/subnet"
+    vpc_id = module.vpc.id
+    name = "public"
+    cidrs = var.public_cidr_block
+    availability_zones = var.availability_zones
+    tags = {
+        Name = "${var.name}"
+        Environment = "${var.environment}"
+        Owner = "${var.owner}"
+        Company = "${var.company}"
+    }
+    # depends_on = [module.vpc]
+}
+
+module "private_subnet" {
+    source = "./modules/subnet"
+    name = "private"
+    vpc_id = module.vpc.id
+    cidrs = var.private_cidr_block
+    availability_zones = var.availability_zones
+    tags = {
+        Name = "${var.name}"
+        Environment = "${var.environment}"
+        Owner = "${var.owner}"
+        Company = "${var.company}"
+    }
+}
+
+module "sg" {
+    source = "./modules/sg"
+    name = "allow_tls_${var.name}"
+    vpc_id = module.vpc.id
+    allow_cidr_blocks = var.allow_cidr_blocks
+    tags = {
+        Name = "sg-${var.name}"
+        Environment = "${var.environment}"
+        Owner = "${var.owner}"
+        Company = "${var.company}"
+    }
+}
+
+module "nat_gw" {
+    source = "./modules/nat_gw"
+    subnet_ids = module.public_subnet.ids
+}
+
+module "network" {
+    source = "./modules/network"
+    vpc_id = module.vpc.id
+    igw_id = module.vpc.igw_id
+    nat_ids = module.nat_gw.nat_ids
+    public_rt_ids = module.public_subnet.route_table_ids
+    private_rt_ids = module.private_subnet.route_table_ids
+    destination_cidr_block = var.destination_cidr_block
+    tags = {
+        Name = "rt-${var.name}"
+        Environment = "${var.environment}"
+        Owner = "${var.owner}"
+        Company = "${var.company}"
+    }
+}
+
+module "instance" {
+    source = "./modules/instance"
+    subnets_id = module.public_subnet.ids # for public net
+    ami_id = data.aws_ami.amazon_linux_2.id # ???
+    instance_type = var.instance_type
+    sg_ids = [module.sg.default_id, module.sg.ssh_proxy]
+    # nat_eip_ids = module.nat_gw.eip_ids
+    availability_zones = var.availability_zones
+    key_name = var.key_name
+    tags = {
+        Name = "ec2-${var.name}"
+        Environment = "${var.environment}"
+        Owner = "${var.owner}"
+        Company = "${var.company}"
+    }
+    user_data = file(data.local_file.install_httpd.filename)
+}
+
+module "elb" {
+    source = "./modules/elb"
+    vpc_id = module.vpc.id
+    elb_name = "elb-${var.name}"
+    port = 80
+    protocol = "HTTP"
+    subnets = module.public_subnet.ids
+    security_groups = [module.sg.default_id]
+    hc_target = var.hc_target
+    instance_ids = module.instance.ids
+    tags = {
+        Name = "lb-${var.name}"
+        Environment = "${var.environment}"
+        Owner = "${var.owner}"
+        Company = "${var.company}"
+    }
+}

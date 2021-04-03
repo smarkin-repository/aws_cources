@@ -1,0 +1,37 @@
+---
+- name: update all packages
+  apt:
+    update_cache: yes
+
+- name: Add a new user
+  shell: |
+    adduser ec-user --disabled-login --gecos ""
+    usermod -aG sudo ec-user
+    rsync --archive --chown=ec-user:ec-user ~/.ssh /home/ec-user
+
+- name: install build packages
+  # become: true
+  # become_user: root
+  apt:
+    name: 
+      - build-essential
+      - libreadline-dev
+      - libssl-dev
+      - libncurses5-dev
+      - zlib1g-dev
+    state: latest
+
+- name: install applications
+  # become: true
+  # become_user: root
+  apt:
+    name: 
+      - lynx
+      - unzip
+    state: latest
+
+# - name: remove unused dependency packages
+#   become: true
+#   become_user: root
+#   apt:
+#     autoremove: yes

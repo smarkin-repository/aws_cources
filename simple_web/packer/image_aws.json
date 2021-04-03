@@ -1,0 +1,43 @@
+{
+    "variables": {
+        "destination_regions": "eu-west-1",
+        "ssh_keypair_name": "omakaupunki_key",
+        "ssh_key_file": "~/.ssh/keys/omakaupunki_key.pem"
+    },  
+    "builders" : [
+        {
+            "ami_name": "base-web-{{timestamp}}",
+            "instance_type": "t2.micro",
+            "region": "eu-west-1",
+            "source_ami_filter": {
+                "filters": {
+                  "name": "*ubuntu-xenial-16.04-amd64-server-*",
+                  "root-device-type": "ebs",
+                  "virtualization-type": "hvm"
+                },
+                "most_recent": true,
+                "owners": ["099720109477"]
+              },
+            "ami_regions": "{{user `destination_regions`}}",
+            "ssh_username": "ubuntu",
+            "ssh_password": "ubuntu",
+            "ssh_timeout": "35s",
+            "ssh_keypair_name": "{{user `ssh_keypair_name`}}",
+            "ssh_private_key_file" : "{{user `ssh_key_file`}}",
+            "type": "amazon-ebs",
+            "encrypt_boot": true
+        }
+    ],
+    "provisioners": [{
+            "type": "file",
+            "source": "./data/welcome.txt",
+            "destination": "/home/ubuntu/"
+        },{
+            "type": "shell",
+            "inline": ["ls -al /home/ubuntu", "cat /home/ubuntu/welcome.txt"]
+        },{
+            "type": "shell",
+            "script": "./bs_scripts/setup_base.sh"
+        }
+    ]
+}

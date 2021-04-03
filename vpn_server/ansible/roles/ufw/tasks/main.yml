@@ -1,0 +1,41 @@
+- name: install Ubuntu firewall package
+  become: true
+  become_user: root
+  apt:
+    name: ufw
+    state: latest
+
+- name: logging to /var/log/ufw.log
+  become: true
+  become_user: root
+  ufw:
+    logging: "on"
+
+# - name: set the default incoming policy (ALL deny)
+#   become: true
+#   become_user: root
+#   ufw:
+#     direction: incoming
+#     policy: deny
+
+- name: allow outgoing (ALL allow)
+  become: true
+  become_user: root
+  ufw:
+    policy: allow
+    direction: incoming
+
+
+- name: allow SSH port number
+  become: true
+  become_user: root
+  ufw:
+    rule: allow
+    proto: tcp
+    port: "22"
+
+- name: reloads firewall and enables firewall on boot
+  become: true
+  become_user: root
+  ufw:
+    state: enabled
