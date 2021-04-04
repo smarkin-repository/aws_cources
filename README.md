@@ -101,3 +101,14 @@ DevOps:
  Project:
   https://github.com/builderbook/builderbook
   https://reactjs.org/community/examples.html
+
+
+# Terminal
+git clone --depth=1 https://gitee.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
+git clone https://github.com/ryanoasis/nerd-fonts.git
+git clone --depth=1 https://github.com/romkatv/nerd-fonts.git
+cd ./nerd-fonts
+ls -l
+./build 'Meslo/S/*'
+  
