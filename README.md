@@ -112,3 +112,7 @@ cd ./nerd-fonts
 ls -l
 ./build 'Meslo/S/*'
   
+
+https://kubernetes.io/blog/2020/05/21/wsl-docker-kubernetes-on-the-windows-desktop/
+https://andrewlock.net/running-kubernetes-and-the-dashboard-with-docker-desktop/
+https://duruldalkanat.medium.com/kubernetes-installation-with-minikube-101-hello-world-996a1146d54dc
