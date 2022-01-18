@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1 
+kind: Ingress
+metadata:
+  name: nginx-ingrss
+  namespace: default
+spec:
+  rules:
+  - host: www.home-one.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: web-two
+            port:
+              number: 80
+        path: /
+        pathType: ImplementationSpecific
+status:
+  loadBalancer: {}

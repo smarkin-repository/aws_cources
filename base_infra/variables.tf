@@ -11,11 +11,10 @@ variable "company" {
 }
 
 variable "environment" {
-    default = "stg"
 }
 
 variable "vpc_name" {
-    default = "main vpc"
+    default = "main"
 }
 
 variable "tfstate_bucket" {
@@ -23,5 +22,7 @@ variable "tfstate_bucket" {
 }
 
 variable "owner" {
-    default = "admin"
+}
+
+variable "stack" {
 }

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ping
+  name: srv-ping
+  namespace: ing-internal
+spec:
+  ports:
+  - name: ping
+    port: 5678
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: ping
+  type: NodePort
+status:
+  loadBalancer: {}

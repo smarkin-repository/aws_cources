@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx-kusc00101
+    lab: nginx
+  name: nginx-kusc00101
+spec:
+  containers:
+  - image: nginx
+    name: nginx-kusc00101
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+  nodeSelector:
+    disk: ssd
+status: {}

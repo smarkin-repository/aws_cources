@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: aws-pvc
+  labels:
+    type: aws-pvc
+spec:
+  storageClassName: gp2 
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200Mi
+  volumeName: aws-pv

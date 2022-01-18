@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: rc-nginx
+  labels:
+    app: nginx
+    tier: proxy
+spec:
+  # modify replicas according to your case
+  replicas: 6
+  selector:
+    matchLabels:
+      tier: proxy
+  template:
+    metadata:
+      labels:
+        tier: proxy
+    spec:
+      containers:
+      - name: nginx
+        image: nginx

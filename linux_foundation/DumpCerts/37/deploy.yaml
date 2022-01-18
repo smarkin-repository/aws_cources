@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: present
+  name: present
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: present
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: present
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}

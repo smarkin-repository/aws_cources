@@ -38,11 +38,6 @@ data "aws_ami" "amazon_linux_2" {
     values = ["amzn2-ami-hvm-*-x86_64-ebs"]
   }
 
-#   filter {
-#     name   = "architecture"
-#        values = ["x86_64"]
-#   }
-
   owners = ["amazon"]
 }
 
@@ -128,22 +123,6 @@ module "route" {
         Company = "${var.company}"
     } 
 }
-
-# module "instance" {
-#     source = "./modules/instance"
-#     subnets_id = module.private_subnet.ids
-#     ami_id = data.aws_ami.ubuntu.id
-#     instance_type = var.instance_type
-#     sg_ids = [module.sg_default.id]
-#     nat_eip_ids = module.nat_gw.eip_ids
-#     tags = {
-#         Name = "ec2-${var.name}"
-#         Environment = "${var.environment}"
-#         Owner = "${var.owner}"
-#         Company = "${var.company}"
-#     } 
-#     user_data = data.local_file.install_httpd.filename
-# }
 
 module "lb" {
     source = "./modules/lb"

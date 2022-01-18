@@ -9,7 +9,8 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app.kubernetes.io/name: nginx
+    # app.kubernetes.io/name: nginx
+    name: nginx
   ports:
     - protocol: TCP
       port: 80

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: srv-pv
+  labels:
+    type: local
+spec:
+  storageClassName: "app-data"
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/srv/app-data"
+ 

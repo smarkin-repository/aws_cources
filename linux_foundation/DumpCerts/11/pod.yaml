@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hungry-bear
+  labels:
+    app: bear
+spec:
+  volumes:
+    - name: workdir
+      emptyDir: {}
+  containers:
+  - name: checker
+    image: alpine
+    command: ["/bin/sh","-c"]
+    args:
+      - sleep 10000
+    volumeMounts:
+    - name: workdir
+      mountPath: /workdir
+    startupProbe:
+      exec:
+        command:
+        - cat
+        - /workdir/calm.txt
+      failureThreshold: 3
+      periodSeconds: 1
+  initContainers:
+  - name: create
+    image: alpine
+    command: ["/bin/sh", "-c"]
+    args:
+      - touch /workdir/calm.txt
+    volumeMounts:
+    - name: workdir
+      mountPath: /workdir

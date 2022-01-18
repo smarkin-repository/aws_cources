@@ -1,0 +1,4 @@
+NAME              ENDPOINTS           AGE
+hello-minikube1   172.17.0.2:8080     16d
+kubernetes        192.168.49.2:8443   17d
+nginx             172.17.0.6:80       16d

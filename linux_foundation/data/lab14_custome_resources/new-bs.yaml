@@ -1,0 +1,8 @@
+apiVersion: "stable.example.com/v1"
+kind: Busia
+metadata:
+  name: new-baby
+spec:
+  comment: "True Busia"
+  weight: "11 kg"
+  growth: "80 cm"
