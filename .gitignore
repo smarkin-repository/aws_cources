@@ -170,3 +170,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+# read-for.sh
+**/read-for.sh
+
+
+**/LFS301
