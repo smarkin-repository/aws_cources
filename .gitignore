@@ -177,3 +177,9 @@ dmypy.json
 
 
 **/LFS301
+
+# General
+.vagrant/
+
+# Log files (if you are creating logs in debug mode, uncomment this)
+# *.log
