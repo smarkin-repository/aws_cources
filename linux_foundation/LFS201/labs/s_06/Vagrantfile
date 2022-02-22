@@ -1,0 +1,30 @@
+Vagrant.configure("2") do |config|
+    config.vm.box = "centos/8"
+    config.ssh.insert_key = true
+    config.disksize.size = '10GB'
+    config.vm.provider "virtualbox" do |vb|
+      vb.memory = "5120"
+      vb.cpus = "2"
+    end
+    config.vm.synced_folder "./data", "/home/vagrant/data"
+    config.vm.provision "shell", path: "./scripts/shell_setup.sh"
+end
+
+
+# Vagrant was unable to mount VirtualBox shared folders. This is usually
+# because the filesystem "vboxsf" is not available. This filesystem is
+# made available via the VirtualBox Guest Additions and kernel module.
+# Please verify that these guest additions are properly installed in the
+# guest. This is not a bug in Vagrant and is usually caused by a faulty
+# Vagrant box. For context, the command attempted was:
+# mount -t vboxsf -o uid=1000,gid=1000,_netdev home_vagrant_data /home/vagrant/data
+
+# The error output from the command was:
+
+# mount: unknown filesystem type 'vboxsf'
+
+# $ vagrant plugin install vagrant-vbguest
+
+# $ vagrant plugin install vagrant-vbguest
+#  Installing the 'vagrant-vbguest' plugin. This can take a few minutes...
+#  Installed the plugin 'vagrant-vbguest (0.30.0)'!
