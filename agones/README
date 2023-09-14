@@ -1,0 +1,13 @@
+
+# https://agones.dev/site/docs/installation/creating-cluster/minikube/
+kubectl apply -f ./service.yml
+
+minikube ip -p minikube
+minikube service list -p minikube
+
+# try to use ingress
+https://stackoverflow.com/questions/65606657/udp-socket-client-not-able-to-communicate-with-udp-socket-server-on-minikube
+https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/
+https://minikube.sigs.k8s.io/docs/tutorials/nginx_tcp_udp_ingress/
+
+
